@@ -11,7 +11,7 @@ def login_user(cl: Client):
     Attempts to login to Instagram using either the provided session information
     or the provided username and password.
     """
-    session = cl.load_settings("session.json")
+    session = cl.load_settings("instagram/session.json")
 
     login_via_session = False
     login_via_pw = False
@@ -80,7 +80,7 @@ def create_video_list(base_path):
     # print(videos)
     return videos
 
-base_directory = '../videos'  # Change this to your directory path
+base_directory = 'videos'  # Change this to your directory path
 videos = create_video_list(base_directory)
 
 

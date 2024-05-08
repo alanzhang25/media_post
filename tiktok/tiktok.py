@@ -35,10 +35,10 @@ def create_video_list(base_path):
 
 
 # Example usage
-base_directory = '../videos'  # Change this to your directory path
+base_directory = 'videos'  # Change this to your directory path
 videos = create_video_list(base_directory)
 
-auth = AuthBackend(cookies='cookies.txt')
+auth = AuthBackend(cookies='tiktok/cookies.txt')
 
 failed_videos = []
 for video in videos:
