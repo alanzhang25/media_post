@@ -1,8 +1,19 @@
 from tiktok_uploader.upload import upload_videos
 from tiktok_uploader.auth import AuthBackend
 
-import os, time, random
+import os, time, random, pickle, logging
 
+logger = logging.getLogger()
+
+class Video_Object:
+    def __init__(self, video_path, caption, user):
+        self.video_path = video_path
+        self.caption = caption
+        self.user = user
+    
+    def __repr__(self):
+        return f"Video_Object(video_path={self.video_path}, caption={self.caption}, user={self.user})"
+    
 def create_video_list(base_path):
     """
     Process all files in a directory and its subdirectories.
@@ -10,45 +21,37 @@ def create_video_list(base_path):
     :param base_path: The base directory to start the recursive file listing.
     """
     videos = []
-    for dirpath, dirnames, filenames in os.walk(base_path):
-        # print(f"Currently in directory: {dirpath}")
-        video_path = ""
-        description = ""
+    
+    with open('video_objects.pkl', 'rb') as f:
+        list_of_video_objects = pickle.load(f)
 
-        for filename in filenames:
-            file_path = os.path.join(dirpath, filename)
-            # print(f"Processing file: {file_path}")
-            if filename.endswith(".mp4"):
-                video_path = file_path
-            elif filename.endswith(".txt"):
-                with open(file_path, 'r', encoding='utf-8') as file:
-                    description = file.read().strip()
+    for video_object in list_of_video_objects:
+        videos.append( {
+            'video': str(video_object.video_path),
+            'description': video_object.caption
+        })
 
-        if video_path and description:
-            videos.append( {
-                'video': video_path,
-                'description': description
-            })
-
-    # print(videos)
+    # logger.info(videos)
     return videos
 
+def video_complete(video):
+    logger.info("SUCCESS!")
+    random_time = random.randint(30, 60)
+    logger.info("Sleeping for " + str(random_time) + " secs")
+    time.sleep(random_time)
 
-# Example usage
-base_directory = 'videos'  # Change this to your directory path
+base_directory = 'videos'
 videos = create_video_list(base_directory)
 
-auth = AuthBackend(cookies='tiktok/cookies.txt')
+try:
+    auth = AuthBackend(cookies='tiktok/cookies.txt')
+except Exception as e:
+    logger.info("Authentication error: " + str(e))
 
-failed_videos = []
-for video in videos:
-    new_caption = video["description"] + " #fyp"
-    temp_vid = [{"video": video["video"], "description": new_caption}]
-    failed_videos.append(upload_videos(videos=temp_vid, auth=auth, headless=True))
-    print("SUCCESS!")
-    random_time = random.randint(30, 60)
-    print("Sleeping for " + str(random_time) + " secs")
-    time.sleep(random_time)
-    
-# for video in failed_videos: # each input video object which failed
-#     print(f'{video['video']} with description "{video['description']}" failed')
+try:
+    failed = upload_videos(videos=videos, auth=auth, headless=True, on_complete=video_complete)
+except Exception as e:
+    logger.info("Error: " + str(e))
+        
+for video in failed: # each input video object which failed
+    logger.info(f'{video['video']} with description "{video['description']}" failed')

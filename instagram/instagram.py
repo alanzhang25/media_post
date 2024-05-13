@@ -1,10 +1,21 @@
 from instagrapi import Client
 from instagrapi.exceptions import LoginRequired
-import logging, os, time, random
+import logging, os, time, random, pickle
 
-logger = logging.getLogger()
 USERNAME = 'chalant_ttrp'
 PASSWORD = 'alanetai2332'
+logger = logging.getLogger()
+
+
+class Video_Object:
+    def __init__(self, video_path, caption, user):
+        self.video_path = video_path
+        self.caption = caption
+        self.user = user
+    
+    def __repr__(self):
+        return f"Video_Object(video_path={self.video_path}, caption={self.caption}, user={self.user})"
+    
 
 def login_user(cl: Client):
     """
@@ -57,27 +68,17 @@ def create_video_list(base_path):
     :param base_path: The base directory to start the recursive file listing.
     """
     videos = []
-    for dirpath, dirnames, filenames in os.walk(base_path):
-        # print(f"Currently in directory: {dirpath}")
-        video_path = ""
-        description = ""
+    
+    with open('video_objects.pkl', 'rb') as f:
+        list_of_video_objects = pickle.load(f)
 
-        for filename in filenames:
-            file_path = os.path.join(dirpath, filename)
-            # print(f"Processing file: {file_path}")
-            if filename.endswith(".mp4"):
-                video_path = file_path
-            elif filename.endswith(".txt"):
-                with open(file_path, 'r', encoding='utf-8') as file:
-                    description = file.read().strip()
+    for video_object in list_of_video_objects:
+        videos.append( {
+            'video': video_object.video_path,
+            'description': video_object.caption
+        })
 
-        if video_path and description:
-            videos.append( {
-                'video': video_path,
-                'description': description
-            })
-
-    # print(videos)
+    print(videos)
     return videos
 
 base_directory = 'videos'  # Change this to your directory path
@@ -87,14 +88,17 @@ videos = create_video_list(base_directory)
 cl = Client()
 login_user(cl)
 
-for video in videos:
-    video_path, description = video["video"], video["description"]
-    print("Video Path: " + video_path)
-    print("Description: " + description)
-    cl.clip_upload(video_path, description)
-    print("SUCCESS!")
-    random_time = random.randint(30, 60)
-    print("Sleeping for " + str(random_time) + " secs")
-    time.sleep(random_time)
+try:
+    for video in videos:
+        video_path, description = video["video"], video["description"]
+        print("Video Path: " + str(video_path))
+        print("Description: " + description)
+        cl.clip_upload(video_path, description)
+        print("SUCCESS!")
+        random_time = random.randint(30, 60)
+        print("Sleeping for " + str(random_time) + " secs")
+        time.sleep(random_time)
+except Exception as e:
+    print("Error: " + str(e))
 
 
