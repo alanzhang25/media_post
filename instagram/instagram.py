@@ -100,5 +100,3 @@ try:
         time.sleep(random_time)
 except Exception as e:
     print("Error: " + str(e))
-
-

@@ -18,6 +18,18 @@ prof_to_be_inserted = {
     # "ra.sigma.memes": 0,
     # "uncooked_bread23": 0,
     # "funnyclipzone": 0,
+    # "doof3d": 0,
+    # "squidwordmemes2": 0,
+    # "summer.sleepyhead": 0,
+    # "cenowtf": 0,
+    # "friedoptimusprime": 0,
+    # "nostalgiacorerm": 0,
+    # "needless.mp4": 0,
+    # "percsfo": 0,
+    # "greeeencum": 0,
+    # "breasts": 0,
+    # "bepiz.man": 0,
+    # "internets_highlights": 0,
 }
 
 list_of_rows = []

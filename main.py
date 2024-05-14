@@ -4,7 +4,7 @@ import subprocess, time, shutil
 python_executable = "/Library/Frameworks/Python.framework/Versions/3.12/bin/python3"
 
 ### FILL IN THIS INFORMATION ###
-profile_to_download = "funnyclipzone"
+profile_to_download = "doof3d"
 count_of_posts = 2
 ####
 
