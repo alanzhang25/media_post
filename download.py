@@ -64,6 +64,8 @@ def main():
 
     download_videos_from_user(profile, download_path, args.count)
 
+
+#TODO: remove @s
 def process_caption_txt(text):
     """
     Checks the word count in the text file. If the file contains more than 15 words, 

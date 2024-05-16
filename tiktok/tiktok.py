@@ -31,13 +31,13 @@ def create_video_list(base_path):
             'description': video_object.caption
         })
 
-    # logger.info(videos)
+    # logger.debug(videos)
     return videos
 
 def video_complete(video):
-    logger.info("SUCCESS!")
+    logger.debug("SUCCESS!")
     random_time = random.randint(30, 60)
-    logger.info("Sleeping for " + str(random_time) + " secs")
+    logger.debug("Sleeping for " + str(random_time) + " secs")
     time.sleep(random_time)
 
 base_directory = 'videos'
@@ -46,12 +46,12 @@ videos = create_video_list(base_directory)
 try:
     auth = AuthBackend(cookies='tiktok/cookies.txt')
 except Exception as e:
-    logger.info("Authentication error: " + str(e))
+    logger.debug("Authentication error: " + str(e))
 
 try:
     failed = upload_videos(videos=videos, auth=auth, headless=True, on_complete=video_complete)
 except Exception as e:
-    logger.info("Error: " + str(e))
+    logger.debug("Error: " + str(e))
         
 for video in failed: # each input video object which failed
-    logger.info(f'{video['video']} with description "{video['description']}" failed')
+    logger.debug(f'{video['video']} with description "{video['description']}" failed')
