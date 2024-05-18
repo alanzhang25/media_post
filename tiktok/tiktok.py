@@ -54,4 +54,4 @@ except Exception as e:
     logger.debug("Error: " + str(e))
         
 for video in failed: # each input video object which failed
-    logger.debug(f'{video['video']} with description "{video['description']}" failed')
+    logger.debug(f'{video["video"]} with description "{video["description"]}" failed')
