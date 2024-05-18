@@ -1,8 +1,8 @@
-import subprocess, time, logging
+import sys, subprocess, time, logging
 
 logger = logging.getLogger()
 
-python_executable = "/Library/Frameworks/Python.framework/Versions/3.12/bin/python3"
+python_executable = sys.executable
 
 ### FILL IN THIS INFORMATION ###
 profile_to_download = "needless.mp4"
