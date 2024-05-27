@@ -31,13 +31,13 @@ def delete_file(file_path):
     """
     try:
         os.remove(file_path)
-        print(f"File '{file_path}' has been deleted successfully.")
+        logging.info(f"File '{file_path}' has been deleted successfully.")
     except FileNotFoundError:
-        print(f"File '{file_path}' not found.")
+        logging.info(f"File '{file_path}' not found.")
     except PermissionError:
-        print(f"Permission denied: unable to delete '{file_path}'.")
+        logging.info(f"Permission denied: unable to delete '{file_path}'.")
     except Exception as e:
-        print(f"Error occurred while deleting the file '{file_path}': {e}")
+        logging.info(f"Error occurred while deleting the file '{file_path}': {e}")
 
 def pop_first_element():
     with open('video_objects.pkl', 'rb') as file:
@@ -50,8 +50,6 @@ def pop_first_element():
     
     with open('video_objects.pkl', 'wb') as file:
         pickle.dump(my_list, file)
-    
-    delete_file(first_element.video_path)
 
     video_obj = {
             'video': str(first_element.video_path),
@@ -135,5 +133,6 @@ try:
 except Exception as e:
     logging.debug("Error: " + str(e))
         
-for video in failed: # each input video object which failed
-    logging.debug(f'{video["video"]} with description "{video["description"]}" failed')
+# for video in failed: # each input video object which failed
+#     logging.debug(f'{video["video"]} with description "{video["description"]}" failed')
+delete_file(video["video"])
