@@ -29,6 +29,21 @@ jobs:
     - name: Run Python script
       run: python download_GA.py
 
+    - name: Count added files in videos directory
+      id: count_added_files
+      run: |
+        ADDED_FILES=$(git status videos --porcelain | grep 'A  ' | wc -l)
+        echo "added_files=$ADDED_FILES" >> $GITHUB_ENV
+    
+    - name: Set commit message
+      id: set_commit_message
+      run: |
+        if [ ${{ env.added_files }} -gt 0 ]; then
+          echo "commit_message=DOWNLOADER: ${{ env.added_files }} new videos" >> $GITHUB_ENV
+        else
+          echo "commit_message=DOWNLOADER: No new files added to videos directory" >> $GITHUB_ENV
+        fi
+
     - uses: stefanzweifel/git-auto-commit-action@v5
       with:
-        commit_message: "Downloader: Adding videos"
+        commit_message: ${{ env.commit_message }}
