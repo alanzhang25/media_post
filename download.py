@@ -58,6 +58,10 @@ def main():
 
     conn = sqlite3.connect('account_information.sqlite')
     cur = conn.cursor()
+
+    cl = Client()
+    login_user(cl)
+
     if args.command == "manual":
         logging.info("manual execution")
 
@@ -72,7 +76,7 @@ def main():
         download_path = "videos"
         create_video_dir(download_path)
 
-        list_of_videos = download_videos_from_user(profile, download_path, args.count)
+        list_of_videos = download_videos_from_user(cl, profile, download_path, args.count)
 
         random.shuffle(list_of_videos)
         with open('video_objects.pkl', 'wb') as f:
@@ -90,7 +94,7 @@ def main():
 
         list_of_videos = []
         for profile in profiles:
-            temp = download_videos_from_user(profile, download_path)
+            temp = download_videos_from_user(cl, profile, download_path)
             list_of_videos = list_of_videos + temp
 
         random.shuffle(list_of_videos)
@@ -194,9 +198,7 @@ def update_sql_tbl (last_used_post_id, user):
         cursor.close()
         conn.close()
 
-def download_videos_from_user(insta_profile: Profile, download_folder, max_count=20):
-    cl = Client()
-    login_user(cl)
+def download_videos_from_user(cl: Client ,insta_profile: Profile, download_folder, max_count=20):
     user_id = insta_profile.user_id
     medias = cl.user_clips(user_id, amount=max_count) 
 

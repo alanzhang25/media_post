@@ -35,6 +35,6 @@ jobs:
       run: |
         git add .
         git commit -m "Automated commit"
-        git push https://<username>:${{ secrets.GA_PAT }}@github.com/<username>/<repository>.git HEAD:main
+        git push https://alanzhang25:${{ secrets.GA_PAT }}@github.com/alanzhang25/media_post.git HEAD:main
       env:
         GA_PAT: ${{ secrets.GA_PAT }}
