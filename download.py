@@ -1,9 +1,10 @@
 from instagrapi import Client
 from instagrapi.exceptions import LoginRequired
 
-import os, argparse, logging, sqlite3, pickle
+import os, argparse, logging, sqlite3, pickle, random
 
 logger = logging.getLogger()
+logger.setLevel(logging.DEBUG)
 
 USERNAME = 'chalant_ttrp'
 PASSWORD = 'alanetai2332'
@@ -40,31 +41,64 @@ def main():
     a queue like data structure.
     """
     parser = argparse.ArgumentParser(description="Download profile posts.")
-    parser.add_argument('profile', type=str, help='Instagram profile to download')
-    parser.add_argument('count', type=int, help='Number of posts to download')
+    subparsers = parser.add_subparsers(dest="command", help="Available commands")
 
+    # Subparser for 'manual'
+    parser_manual = subparsers.add_parser("manual", help="(Manual) Download a specifc amount of videos from one profile and upload them immediately")
+    parser_manual.add_argument('profile', type=str, help='Instagram profile to download')
+    parser_manual.add_argument('count', type=int, help='Number of posts to download')
     
-    args = parser.parse_args()
+    # Subparser for 'subtract'
+    parser_auto = subparsers.add_parser("automatic", help="Everyday download the latest videos from every profile in our list, and then have a CRON to upload these videos. This idea follows a queue like data structure.")
+
+    # Add more subparsers if nesscary
 
     # Connect to the SQLite database
 
-    #TODO: Add logic to check if a manual run user is present in sql table, if not add it.
+    args = parser.parse_args()
+
     conn = sqlite3.connect('account_information.sqlite')
     cur = conn.cursor()
-    cur.execute(f"SELECT username, number_of_saved, user_id, last_used_post_id FROM profiles WHERE username=\"{args.profile}\"")
-    rows = cur.fetchall()
+    if args.command == "manual":
+        logger.info("manual execution")
+
+        #TODO: Add logic to check if a manual run user is present in sql table, if not add it.
+        cur.execute(f"SELECT username, number_of_saved, user_id, last_used_post_id FROM profiles WHERE username=\"{parser_manual.profile}\"")
+        rows = cur.fetchall()
 
 
-    profiles = [Profile(*row) for row in rows]
-    profile = profiles[0]
+        profiles = [Profile(*row) for row in rows]
+        profile = profiles[0]
 
 
-    download_path = "videos" 
-    os.makedirs(download_path)
+        download_path = "videos" 
+        os.makedirs(download_path)
 
-    download_videos_from_user(profile, download_path, args.count)
+        list_of_videos = download_videos_from_user(profile, download_path, args.count)
 
+        random.shuffle(list_of_videos)
+        with open('video_objects.pkl', 'wb') as f:
+            pickle.dump(list_of_videos, f)
 
+    elif args.command == "automatic":
+        logger.info("automatic execution")
+        cur.execute(f"SELECT username, number_of_saved, user_id, last_used_post_id FROM profiles")
+        rows = cur.fetchall()
+        profiles = [Profile(*row) for row in rows]
+
+        list_of_videos = []
+        for profile in profiles:
+            temp = download_videos_from_user(profile, download_path)
+            list_of_videos = list_of_videos + temp
+
+        random.shuffle(list_of_videos)
+        with open('video_objects.pkl', 'wb') as f:
+            pickle.dump(list_of_videos, f)
+
+    else:
+        parser.print_help()
+        return
+    
 #TODO: remove @s
 def process_caption_txt(text):
     """
@@ -82,7 +116,7 @@ def process_caption_txt(text):
 
         return cleaned_text
     except Exception as e:
-        print(f"An error occurred: {e}")
+        logger.info(f"An error occurred: {e}")
 
 def login_user(cl: Client):
     """
@@ -102,7 +136,7 @@ def login_user(cl: Client):
             # check if session is valid
             try:
                 cl.get_timeline_feed()
-                print("Success with session")
+                logger.info("Success with session")
             except LoginRequired:
                 logger.info("Session is invalid, need to login via username and password")
 
@@ -128,7 +162,34 @@ def login_user(cl: Client):
     if not login_via_pw and not login_via_session:
         raise Exception("Couldn't login user with either password or session")
 
-def download_videos_from_user(insta_profile: Profile, download_folder, max_count):
+def update_sql_tbl (last_used_post_id, user):
+    conn = sqlite3.connect('account_information.sqlite')
+    cursor = conn.cursor()
+    
+    try:
+        # Formulate the UPDATE statement
+        update_statement = """
+        UPDATE profiles
+        SET last_used_post_id = ?
+        WHERE username = ?
+        """
+        
+        # Execute the UPDATE statement
+        cursor.execute(update_statement, (last_used_post_id, user))
+        
+        # Commit the transaction
+        conn.commit()
+        logger.info(f"Employee with id {user} had their salary updated to {last_used_post_id}.")
+    
+    except sqlite3.Error as error:
+        logger.info(f"Error occurred while updating the table: {error}")
+    
+    finally:
+        # Close the cursor and connection
+        cursor.close()
+        conn.close()
+
+def download_videos_from_user(insta_profile: Profile, download_folder, max_count=20):
     cl = Client()
     login_user(cl)
     user_id = insta_profile.user_id
@@ -136,14 +197,16 @@ def download_videos_from_user(insta_profile: Profile, download_folder, max_count
 
     list_of_videos = []
     for index, media in enumerate(medias, start=1):
+        if (media.id == insta_profile.last_used_post_id):
+            break
+
         path = cl.video_download_by_url(media.video_url, folder=download_folder)
-        print(str(path))
+        logger.info(str(path))
 
         list_of_videos.append(Video_Object(path, process_caption_txt(media.caption_text), media.user))
+        update_sql_tbl(media.id, insta_profile.username)
 
-
-    with open('video_objects.pkl', 'wb') as f:
-        pickle.dump(list_of_videos, f)
+    return list_of_videos
 
 if __name__ == "__main__":
     main()

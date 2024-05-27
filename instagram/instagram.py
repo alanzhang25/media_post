@@ -5,6 +5,7 @@ import logging, os, time, random, pickle
 USERNAME = 'chalant_ttrp'
 PASSWORD = 'alanetai2332'
 logger = logging.getLogger()
+logger.setLevel(logging.DEBUG)
 
 
 class Video_Object:
@@ -35,7 +36,7 @@ def login_user(cl: Client):
             # check if session is valid
             try:
                 cl.get_timeline_feed()
-                print("Success with session")
+                logger.info("Success with session")
             except LoginRequired:
                 logger.info("Session is invalid, need to login via username and password")
 
@@ -78,7 +79,7 @@ def create_video_list(base_path):
             'description': video_object.caption
         })
 
-    print(videos)
+    logger.info(videos)
     return videos
 
 base_directory = 'videos'  # Change this to your directory path
@@ -91,12 +92,12 @@ login_user(cl)
 try:
     for video in videos:
         video_path, description = video["video"], video["description"]
-        print("Video Path: " + str(video_path))
-        print("Description: " + description)
+        logger.info("Video Path: " + str(video_path))
+        logger.info("Description: " + description)
         cl.clip_upload(video_path, description)
-        print("SUCCESS!")
+        logger.info("SUCCESS!")
         random_time = random.randint(30, 60)
-        print("Sleeping for " + str(random_time) + " secs")
+        logger.info("Sleeping for " + str(random_time) + " secs")
         time.sleep(random_time)
 except Exception as e:
-    print("Error: " + str(e))
+    logger.info("Error: " + str(e))

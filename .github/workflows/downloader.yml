@@ -24,7 +24,7 @@ jobs:
         pip install moviepy
 
     - name: Run Python script
-      run: python main.py
+      run: python download_GA.py
 
     - name: Configure git
       run: |

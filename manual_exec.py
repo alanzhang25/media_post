@@ -5,12 +5,12 @@ logger = logging.getLogger()
 python_executable = sys.executable
 
 ### FILL IN THIS INFORMATION ###
-profile_to_download = "needless.mp4"
+profile_to_download = "greeeencum"
 count_of_posts = 2
 ####
 
 try:
-    command = [python_executable, 'download.py', profile_to_download, str(count_of_posts)]
+    command = [python_executable, 'download.py', 'manual', profile_to_download, str(count_of_posts)]
     subprocess.run(command)
     logger.info("=============================")
     logger.info("Finished Downloading")
