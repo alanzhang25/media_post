@@ -32,9 +32,9 @@ jobs:
         git config --global user.email 'github-actions[bot]@users.noreply.github.com'
 
     - name: Commit and push changes
-      env:
-        GH_PAT: ${{ secrets.GH_PAT }}
       run: |
         git add .
-        git commit -m "Automated download from GitHub Actions"
-        git push https://x-access-token:${GH_PAT}@github.com/${{ github.repository }}.git HEAD:main
+        git commit -m "Automated commit"
+        git push https://<username>:${{ secrets.GA_PAT }}@github.com/<username>/<repository>.git HEAD:main
+      env:
+        GA_PAT: ${{ secrets.GA_PAT }}
