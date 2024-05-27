@@ -7,6 +7,9 @@ jobs:
   run-python-script:
     runs-on: ubuntu-latest
 
+    permissions:
+      contents: write
+      
     steps:
     - uses: actions/checkout@v2
 
@@ -26,15 +29,4 @@ jobs:
     - name: Run Python script
       run: python download_GA.py
 
-    - name: Configure git
-      run: |
-        git config --global user.name 'github-actions[bot]'
-        git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-
-    - name: Commit and push changes
-      run: |
-        git add .
-        git commit -m "Automated commit"
-        git push https://alanzhang25:${{ secrets.GA_PAT }}@github.com/alanzhang25/media_post.git HEAD:main
-      env:
-        GA_PAT: ${{ secrets.GA_PAT }}
+    - uses: stefanzweifel/git-auto-commit-action@v5
