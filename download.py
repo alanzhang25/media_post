@@ -3,8 +3,7 @@ from instagrapi.exceptions import LoginRequired
 
 import os, argparse, logging, sqlite3, pickle, random
 
-logger = logging.getLogger()
-logger.setLevel(logging.DEBUG)
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 USERNAME = 'chalant_ttrp'
 PASSWORD = 'alanetai2332'
@@ -60,7 +59,7 @@ def main():
     conn = sqlite3.connect('account_information.sqlite')
     cur = conn.cursor()
     if args.command == "manual":
-        logger.info("manual execution")
+        logging.info("manual execution")
 
         #TODO: Add logic to check if a manual run user is present in sql table, if not add it.
         cur.execute(f"SELECT username, number_of_saved, user_id, last_used_post_id FROM profiles WHERE username=\"{parser_manual.profile}\"")
@@ -80,7 +79,7 @@ def main():
             pickle.dump(list_of_videos, f)
 
     elif args.command == "automatic":
-        logger.info("automatic execution")
+        logging.info("automatic execution")
 
         download_path = "videos"
         create_video_dir(download_path)
@@ -122,7 +121,7 @@ def process_caption_txt(text):
 
         return cleaned_text
     except Exception as e:
-        logger.info(f"An error occurred: {e}")
+        logging.info(f"An error occurred: {e}")
 
 def login_user(cl: Client):
     """
@@ -142,9 +141,9 @@ def login_user(cl: Client):
             # check if session is valid
             try:
                 cl.get_timeline_feed()
-                logger.info("Success with session")
+                logging.info("Success with session")
             except LoginRequired:
-                logger.info("Session is invalid, need to login via username and password")
+                logging.info("Session is invalid, need to login via username and password")
 
                 old_session = cl.get_settings()
 
@@ -155,15 +154,15 @@ def login_user(cl: Client):
                 cl.login(USERNAME, PASSWORD)
             login_via_session = True
         except Exception as e:
-            logger.info("Couldn't login user using session information: %s" % e)
+            logging.info("Couldn't login user using session information: %s" % e)
 
     if not login_via_session:
         try:
-            logger.info("Attempting to login via username and password. username: %s" % USERNAME)
+            logging.info("Attempting to login via username and password. username: %s" % USERNAME)
             if cl.login(USERNAME, PASSWORD):
                 login_via_pw = True
         except Exception as e:
-            logger.info("Couldn't login user using username and password: %s" % e)
+            logging.info("Couldn't login user using username and password: %s" % e)
 
     if not login_via_pw and not login_via_session:
         raise Exception("Couldn't login user with either password or session")
@@ -185,10 +184,10 @@ def update_sql_tbl (last_used_post_id, user):
         
         # Commit the transaction
         conn.commit()
-        logger.info(f"Employee with id {user} had their salary updated to {last_used_post_id}.")
+        logging.info(f"Employee with id {user} had their salary updated to {last_used_post_id}.")
     
     except sqlite3.Error as error:
-        logger.info(f"Error occurred while updating the table: {error}")
+        logging.info(f"Error occurred while updating the table: {error}")
     
     finally:
         # Close the cursor and connection
@@ -207,7 +206,7 @@ def download_videos_from_user(insta_profile: Profile, download_folder, max_count
             break
 
         path = cl.video_download_by_url(media.video_url, folder=download_folder)
-        logger.info(str(path))
+        logging.info(str(path))
 
         list_of_videos.append(Video_Object(path, process_caption_txt(media.caption_text), media.user))
         update_sql_tbl(media.id, insta_profile.username)

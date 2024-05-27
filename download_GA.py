@@ -1,6 +1,7 @@
 import sys, subprocess, time, logging
 
-logger = logging.getLogger()
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+logging.info("Starting the script...")
 
 python_executable = sys.executable
 
@@ -8,8 +9,8 @@ try:
     command = [python_executable, 'download.py', "automatic"]
     
     subprocess.run(command)
-    logger.info("=============================")
-    logger.info("Download Succesful!")
-    logger.info("=============================")
+    logging.info("=============================")
+    logging.info("Download Succesful!")
+    logging.info("=============================")
 except Exception as e:
-    logger.info("Exception: " + str(e))
+    logging.info("Exception: " + str(e))

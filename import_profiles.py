@@ -4,8 +4,7 @@ from download import Profile, login_user, USERNAME, PASSWORD
 
 import os, argparse, logging, sqlite3
 
-logger = logging.getLogger()
-logger.setLevel(logging.DEBUG)
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 
 cl = Client()

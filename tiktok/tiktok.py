@@ -3,7 +3,7 @@ from tiktok_uploader.auth import AuthBackend
 
 import os, time, random, pickle, logging
 
-logger = logging.getLogger()
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 class Video_Object:
     def __init__(self, video_path, caption, user):
@@ -31,13 +31,13 @@ def create_video_list(base_path):
             'description': video_object.caption
         })
 
-    # logger.debug(videos)
+    # logging.debug(videos)
     return videos
 
 def video_complete(video):
-    logger.debug("SUCCESS!")
+    logging.debug("SUCCESS!")
     random_time = random.randint(30, 60)
-    logger.debug("Sleeping for " + str(random_time) + " secs")
+    logging.debug("Sleeping for " + str(random_time) + " secs")
     time.sleep(random_time)
 
 base_directory = 'videos'
@@ -46,12 +46,12 @@ videos = create_video_list(base_directory)
 try:
     auth = AuthBackend(cookies='tiktok/cookies.txt')
 except Exception as e:
-    logger.debug("Authentication error: " + str(e))
+    logging.debug("Authentication error: " + str(e))
 
 try:
     failed = upload_videos(videos=videos, auth=auth, headless=True, on_complete=video_complete)
 except Exception as e:
-    logger.debug("Error: " + str(e))
+    logging.debug("Error: " + str(e))
         
 for video in failed: # each input video object which failed
-    logger.debug(f'{video["video"]} with description "{video["description"]}" failed')
+    logging.debug(f'{video["video"]} with description "{video["description"]}" failed')
