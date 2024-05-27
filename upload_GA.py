@@ -39,13 +39,16 @@ def delete_file(file_path):
     except Exception as e:
         print(f"Error occurred while deleting the file '{file_path}': {e}")
 
-def pop_first_element(file_path):
-    with open(file_path, 'rb') as file:
+def pop_first_element():
+    with open('video_objects.pkl', 'rb') as file:
         my_list = pickle.load(file)
+    
+    if (len(my_list) <= 0):
+        os._exit(0)
     
     first_element = my_list.pop(0)
     
-    with open(file_path, 'wb') as file:
+    with open('video_objects.pkl', 'wb') as file:
         pickle.dump(my_list, file)
     
     delete_file(first_element.video_path)
