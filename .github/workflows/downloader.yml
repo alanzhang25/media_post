@@ -32,7 +32,7 @@ jobs:
     - name: Count added files in videos directory
       id: count_added_files
       run: |
-        ADDED_FILES=$(git status videos --porcelain | grep 'A  ' | wc -l)
+        ADDED_FILES=$(git status videos --porcelain | grep '??' | wc -l)
         echo "added_files=$ADDED_FILES" >> $GITHUB_ENV
     
     - name: Set commit message
