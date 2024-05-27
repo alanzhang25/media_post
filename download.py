@@ -70,9 +70,8 @@ def main():
         profiles = [Profile(*row) for row in rows]
         profile = profiles[0]
 
-
-        download_path = "videos" 
-        os.makedirs(download_path)
+        download_path = "videos"
+        create_video_dir(download_path)
 
         list_of_videos = download_videos_from_user(profile, download_path, args.count)
 
@@ -82,6 +81,10 @@ def main():
 
     elif args.command == "automatic":
         logger.info("automatic execution")
+
+        download_path = "videos"
+        create_video_dir(download_path)
+        
         cur.execute(f"SELECT username, number_of_saved, user_id, last_used_post_id FROM profiles")
         rows = cur.fetchall()
         profiles = [Profile(*row) for row in rows]
@@ -99,6 +102,9 @@ def main():
         parser.print_help()
         return
     
+def create_video_dir(path):
+    os.makedirs(path, exist_ok=True)
+
 #TODO: remove @s
 def process_caption_txt(text):
     """
