@@ -39,6 +39,17 @@ def delete_file(file_path):
     except Exception as e:
         logging.info(f"Error occurred while deleting the file '{file_path}': {e}")
 
+    file_path = file_path + ".jpg"
+    try:
+        os.remove(file_path)
+        logging.info(f"File '{file_path}' has been deleted successfully.")
+    except FileNotFoundError:
+        logging.info(f"File '{file_path}' not found.")
+    except PermissionError:
+        logging.info(f"Permission denied: unable to delete '{file_path}'.")
+    except Exception as e:
+        logging.info(f"Error occurred while deleting the file '{file_path}': {e}")
+
 def pop_first_element():
     with open('video_objects.pkl', 'rb') as file:
         my_list = pickle.load(file)
