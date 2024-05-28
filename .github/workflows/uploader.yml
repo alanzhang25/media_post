@@ -3,8 +3,8 @@ name: Media Uploader
 on:
   schedule:
     # Run every 45 minutes between 8 AM - 11 PM EST (1 PM - 4 AM UTC)
-    - cron: '0,30 13-23 * * *'
-    - cron: '0,30 0-3 * * *'
+    - cron: '0,30 12-23 * * *'
+    - cron: '0,30 0-2 * * *'
     
 jobs:
   run-python-script:
