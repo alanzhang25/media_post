@@ -105,6 +105,10 @@ def main():
         parser.print_help()
         return
     
+    # Close the cursor and connection
+    cur.close()
+    conn.close()
+    
 def create_video_dir(path):
     os.makedirs(path, exist_ok=True)
 
@@ -190,11 +194,6 @@ def update_sql_tbl (conn, cursor, last_used_post_id, user):
     
     except sqlite3.Error as error:
         logging.info(f"Error occurred while updating the table: {error}")
-    
-    finally:
-        # Close the cursor and connection
-        cursor.close()
-        conn.close()
 
 def download_videos_from_user(cl: Client ,insta_profile: Profile, conn, cursor, download_folder, max_count=20):
     user_id = insta_profile.user_id
