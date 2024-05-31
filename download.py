@@ -76,7 +76,7 @@ def main():
         download_path = "videos"
         create_video_dir(download_path)
 
-        list_of_videos = download_videos_from_user(cl, profile, download_path, args.count)
+        list_of_videos = download_videos_from_user(cl, profile, download_path, conn, cur, args.count)
 
         random.shuffle(list_of_videos)
         with open('video_objects.pkl', 'wb') as f:
@@ -94,7 +94,7 @@ def main():
 
         list_of_videos = []
         for profile in profiles:
-            temp = download_videos_from_user(cl, profile, download_path)
+            temp = download_videos_from_user(cl, profile, conn, cur, download_path)
             list_of_videos = list_of_videos + temp
 
         random.shuffle(list_of_videos)
@@ -171,10 +171,8 @@ def login_user(cl: Client):
     if not login_via_pw and not login_via_session:
         raise Exception("Couldn't login user with either password or session")
 
-def update_sql_tbl (last_used_post_id, user):
-    conn = sqlite3.connect('account_information.sqlite')
-    cursor = conn.cursor()
-    
+def update_sql_tbl (conn, cursor, last_used_post_id, user):
+
     try:
         # Formulate the UPDATE statement
         update_statement = """
@@ -188,7 +186,7 @@ def update_sql_tbl (last_used_post_id, user):
         
         # Commit the transaction
         conn.commit()
-        logging.info(f"Employee with id {user} had their salary updated to {last_used_post_id}.")
+        logging.info(f"Employee with id {user} had their last_video_id updated to {last_used_post_id}.")
     
     except sqlite3.Error as error:
         logging.info(f"Error occurred while updating the table: {error}")
@@ -198,11 +196,13 @@ def update_sql_tbl (last_used_post_id, user):
         cursor.close()
         conn.close()
 
-def download_videos_from_user(cl: Client ,insta_profile: Profile, download_folder, max_count=20):
+def download_videos_from_user(cl: Client ,insta_profile: Profile, download_folder, conn, cursor, max_count=20):
     user_id = insta_profile.user_id
     medias = cl.user_clips(user_id, amount=max_count) 
 
     list_of_videos = []
+    last_media_id = None
+
     for index, media in enumerate(medias, start=1):
         if (media.id == insta_profile.last_used_post_id):
             break
@@ -211,7 +211,10 @@ def download_videos_from_user(cl: Client ,insta_profile: Profile, download_folde
         logging.info(str(path))
 
         list_of_videos.append(Video_Object(path, process_caption_txt(media.caption_text), media.user))
-        update_sql_tbl(media.id, insta_profile.username)
+        last_media_id = media.id
+
+    if last_media_id is not None:
+        update_sql_tbl(conn, cursor, last_media_id, insta_profile.username)
 
     return list_of_videos
 
