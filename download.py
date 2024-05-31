@@ -76,7 +76,7 @@ def main():
         download_path = "videos"
         create_video_dir(download_path)
 
-        list_of_videos = download_videos_from_user(cl, profile, download_path, conn, cur, args.count)
+        list_of_videos = download_videos_from_user(cl, profile, conn, cur, download_path, args.count)
 
         random.shuffle(list_of_videos)
         with open('video_objects.pkl', 'wb') as f:
@@ -196,7 +196,7 @@ def update_sql_tbl (conn, cursor, last_used_post_id, user):
         cursor.close()
         conn.close()
 
-def download_videos_from_user(cl: Client ,insta_profile: Profile, download_folder, conn, cursor, max_count=20):
+def download_videos_from_user(cl: Client ,insta_profile: Profile, conn, cursor, download_folder, max_count=20):
     user_id = insta_profile.user_id
     medias = cl.user_clips(user_id, amount=max_count) 
 
