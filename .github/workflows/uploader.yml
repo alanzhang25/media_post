@@ -1,7 +1,7 @@
 name: Media Uploader
 
 on:
-  workflow_run:
+  workflow_dispatch:
     # Run every 45 minutes between 8 AM - 11 PM EST (1 PM - 4 AM UTC)
     # - cron: '0,30 12-23 * * *'
     # - cron: '0,30 0-6 * * *'
