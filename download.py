@@ -206,10 +206,10 @@ def download_videos_from_user(cl: Client ,insta_profile: Profile, conn, cursor, 
         if (media.id == insta_profile.last_used_post_id):
             break
 
-        path = cl.video_download_by_url(media.video_url, folder=download_folder)
-        logging.info(str(path))
+        # path = cl.video_download_by_url(media.video_url, folder=download_folder)
+        # logging.info(str(path))
 
-        list_of_videos.append(Video_Object(path, process_caption_txt(media.caption_text), media.user))
+        # list_of_videos.append(Video_Object(path, process_caption_txt(media.caption_text), media.user))
         last_media_id = media.id
 
     if last_media_id is not None:
