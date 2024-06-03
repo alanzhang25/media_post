@@ -26,8 +26,10 @@ def create_video_list(base_path):
         list_of_video_objects = pickle.load(f)
 
     for video_object in list_of_video_objects:
+        path = str(video_object.video_path)
+        first_index = path.find('videos')
         videos.append( {
-            'video': str(video_object.video_path),
+            'video': str(path[first_index:]),
             'description': video_object.caption
         })
 
@@ -48,10 +50,11 @@ try:
 except Exception as e:
     logging.debug("Authentication error: " + str(e))
 
+failed = []
 try:
     failed = upload_videos(videos=videos, auth=auth, headless=True, on_complete=video_complete)
 except Exception as e:
-    logging.debug("Error: " + str(e))
+    logging.info("Error: " + str(e))
         
 for video in failed: # each input video object which failed
     logging.debug(f'{video["video"]} with description "{video["description"]}" failed')
