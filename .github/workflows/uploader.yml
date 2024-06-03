@@ -1,7 +1,7 @@
 name: Media Uploader
 
 on:
-  schedule:
+  workflow_run:
     # Run every 45 minutes between 8 AM - 11 PM EST (1 PM - 4 AM UTC)
     # - cron: '0,30 12-23 * * *'
     # - cron: '0,30 0-6 * * *'
@@ -31,7 +31,7 @@ jobs:
         pip install tiktok_uploader
 
     - name: Run Python script
-      run: python upload_GA.py
+      run: python tiktok/tiktok.py
 
     - uses: stefanzweifel/git-auto-commit-action@v5
       with:
