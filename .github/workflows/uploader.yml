@@ -30,7 +30,6 @@ jobs:
 
     permissions:
       contents: write
-      workflows: write  # Add this line to grant workflows permission
 
     steps:
     - name: Check out the repository
