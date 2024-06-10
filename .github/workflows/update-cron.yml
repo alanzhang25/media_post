@@ -5,7 +5,6 @@ on:
 
 permissions:
   contents: write
-  workflows: write  # Add this line to grant workflows permission
 
 jobs:
   update-cron:
