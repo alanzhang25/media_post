@@ -3,12 +3,12 @@ name: Update Cron Schedule
 on:
   workflow_dispatch:
 
-permissions:
-  contents: write
-
 jobs:
   update-cron:
     runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
 
     steps:
     - name: Check out the repository
