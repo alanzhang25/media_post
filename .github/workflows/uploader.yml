@@ -1,7 +1,7 @@
 name: Media Uploader
 
 on:
-  scheldue:
+  schedule:
     # Initial placeholder for cron jobs, to be updated by the other workflow
     - cron: '52 12 * * *'
     - cron: '52 13 * * *'
@@ -22,7 +22,6 @@ on:
     - cron: '49 4 * * *'
     - cron: '54 5 * * *'
     - cron: '38 6 * * *'
-    
 jobs:
   run-python-script:
     runs-on: ubuntu-latest
