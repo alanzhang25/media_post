@@ -34,3 +34,22 @@ jobs:
       uses: stefanzweifel/git-auto-commit-action@v5
       with:
         commit_message: "UPLOADER: Removing video file"
+    - cron: '29 12 * * *'
+    - cron: '16 13 * * *'
+    - cron: '24 14 * * *'
+    - cron: '53 15 * * *'
+    - cron: '59 16 * * *'
+    - cron: '56 17 * * *'
+    - cron: '19 18 * * *'
+    - cron: '57 19 * * *'
+    - cron: '47 20 * * *'
+    - cron: '54 21 * * *'
+    - cron: '6 22 * * *'
+    - cron: '43 23 * * *'
+    - cron: '53 0 * * *'
+    - cron: '26 1 * * *'
+    - cron: '19 2 * * *'
+    - cron: '41 3 * * *'
+    - cron: '46 4 * * *'
+    - cron: '6 5 * * *'
+    - cron: '24 6 * * *'
