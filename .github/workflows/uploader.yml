@@ -48,7 +48,7 @@ jobs:
         pip install instagrapi moviepy tiktok_uploader
 
     - name: Run Python script
-      run: python tiktok/tiktok.py
+      run: python upload_GA.py
 
     - name: Commit and push changes
       uses: stefanzweifel/git-auto-commit-action@v5
