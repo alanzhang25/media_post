@@ -12,3 +12,5 @@ for hour in hours:
 # Print the cron expressions in YAML format
 for cron in cron_expressions:
     print(cron)
+
+print()
