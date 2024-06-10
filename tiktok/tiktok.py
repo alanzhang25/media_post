@@ -33,7 +33,7 @@ def create_video_list(base_path):
             'description': video_object.caption
         })
 
-    # logging.debug(videos)
+    # logging.info(videos)
     return videos
 
 def video_complete(video):

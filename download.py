@@ -93,6 +93,10 @@ def main():
         profiles = [Profile(*row) for row in rows]
 
         list_of_videos = []
+        
+        with open('video_objects.pkl', 'rb') as f:
+            list_of_videos = pickle.load(f)
+
         for profile in profiles:
             temp = download_videos_from_user(cl, profile, conn, cur, download_path)
             list_of_videos = list_of_videos + temp
