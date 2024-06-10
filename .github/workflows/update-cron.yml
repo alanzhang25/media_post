@@ -2,14 +2,14 @@ name: Update Cron Schedule
 
 on:
   workflow_dispatch:
-    # Initial placeholder for cron jobs, to be updated by the other workflow
+
+permissions:
+  contents: write
+  workflows: write  # Add this line to grant workflows permission
 
 jobs:
   update-cron:
     runs-on: ubuntu-latest
-
-    permissions:
-      contents: write
 
     steps:
     - name: Check out the repository
@@ -37,3 +37,9 @@ jobs:
       uses: stefanzweifel/git-auto-commit-action@v5
       with:
         commit_message: "CRON EXPRESSION: randomizing minute"
+        commit_user_name: 'github-actions[bot]'
+        commit_user_email: '41898282+github-actions[bot]@users.noreply.github.com'
+        repository: .
+        branch: main
+      env:
+        GITHUB_TOKEN: ${{ secrets.GA_PAT }}
