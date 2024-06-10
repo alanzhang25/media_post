@@ -15,7 +15,7 @@ jobs:
     - name: Check out the repository
       uses: actions/checkout@v2
       with:
-          token: ${{ secrets.PAT }}
+        token: ${{ secrets.PAT }}
 
     - name: Set up Python
       uses: actions/setup-python@v2
@@ -31,9 +31,7 @@ jobs:
     - name: Update workflow file with new cron expressions
       run: |
         cron_output=$(cat cron_output.txt)
-        echo "$cron_output"
-        sed -i "/^    - cron:/d" .github/workflows/uploader.yml
-        echo "$cron_output" >> .github/workflows/uploader.yml
+        sed -i "/# Initial placeholder for cron jobs/r cron_output.txt" .github/workflows/uploader.yml
 
     - name: Commit and push changes
       run: |
