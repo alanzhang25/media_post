@@ -4,7 +4,7 @@ on:
   schedule:
     # Initial placeholder for cron jobs, to be updated by the other workflow
     - cron: '45 12 * * *'
-
+  workflow_dispatch:
 
 jobs:
   run-python-script:
