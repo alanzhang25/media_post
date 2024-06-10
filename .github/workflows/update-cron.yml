@@ -30,6 +30,9 @@ jobs:
 
     - name: Update workflow file with new cron expressions
       run: |
+        # Remove existing cron expressions
+        sed -i '/^    - cron: /d' .github/workflows/uploader.yml
+        # Insert new cron expressions after the placeholder
         cron_output=$(cat cron_output.txt)
         sed -i "/# Initial placeholder for cron jobs/r cron_output.txt" .github/workflows/uploader.yml
 
