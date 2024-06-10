@@ -91,6 +91,9 @@ login_user(cl)
 
 try:
     for video in videos:
+        # Manual Run
+        # video_path_str = str(video["video"])
+        # video_path, description = video_path_str[video_path_str.find("videos/"):], video["description"]
         video_path, description = video["video"], video["description"]
         logging.info("Video Path: " + str(video_path))
         logging.info("Description: " + description)

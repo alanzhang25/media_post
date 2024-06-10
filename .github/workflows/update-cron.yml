@@ -1,0 +1,36 @@
+name: Update Cron Schedule
+
+on:
+  workflow_dispatch:
+    # Initial placeholder for cron jobs, to be updated by the other workflow
+
+jobs:
+  update-cron:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Check out the repository
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.10'
+
+    - name: Generate cron expressions
+      id: generate_cron
+      run: |
+        python generate_cron.py > cron_output.txt
+        cat cron_output.txt
+
+    - name: Update workflow file with new cron expressions
+      run: |
+        cron_output=$(cat cron_output.txt)
+        echo "$cron_output"
+        sed -i "/^    - cron:/d" .github/workflows/uploader.yml
+        echo "$cron_output" >> .github/workflows/uploader.yml
+
+    - name: Commit and push changes
+      uses: stefanzweifel/git-auto-commit-action@v5
+      with:
+        commit_message: "CRON EXPRESSION: randomizing minute"
