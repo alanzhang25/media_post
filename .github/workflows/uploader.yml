@@ -22,7 +22,6 @@ on:
     - cron: '41 4 * * *'
     - cron: '4 5 * * *'
     - cron: '10 6 * * *'
-
   workflow_dispatch:
 
 jobs:
