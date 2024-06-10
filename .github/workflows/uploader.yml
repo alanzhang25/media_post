@@ -2,25 +2,9 @@ name: Media Uploader
 
 on:
   schedule:
+    # Initial placeholder for cron jobs, to be updated by the other workflow
     - cron: '45 12 * * *'
-    - cron: '40 13 * * *'
-    - cron: '9 14 * * *'
-    - cron: '47 15 * * *'
-    - cron: '1 16 * * *'
-    - cron: '49 17 * * *'
-    - cron: '36 18 * * *'
-    - cron: '38 19 * * *'
-    - cron: '4 20 * * *'
-    - cron: '6 21 * * *'
-    - cron: '23 22 * * *'
-    - cron: '30 23 * * *'
-    - cron: '22 0 * * *'
-    - cron: '4 1 * * *'
-    - cron: '0 2 * * *'
-    - cron: '56 3 * * *'
-    - cron: '34 4 * * *'
-    - cron: '23 5 * * *'
-    - cron: '11 6 * * *'
+
 
 jobs:
   run-python-script:
