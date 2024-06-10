@@ -36,9 +36,3 @@ jobs:
       uses: stefanzweifel/git-auto-commit-action@v5
       with:
         commit_message: "CRON EXPRESSION: randomizing minute"
-        commit_user_name: 'github-actions[bot]'
-        commit_user_email: '41898282+github-actions[bot]@users.noreply.github.com'
-        repository: .
-        branch: main
-      env:
-        GITHUB_TOKEN: ${{ secrets.GA_PAT }}
