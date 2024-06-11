@@ -1,7 +1,7 @@
 from instagrapi import Client
 from instagrapi.exceptions import LoginRequired
 
-import os, argparse, logging, sqlite3, pickle, random
+import os, argparse, logging, sqlite3, pickle, random, time
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
@@ -93,7 +93,7 @@ def main():
         profiles = [Profile(*row) for row in rows]
 
         list_of_videos = []
-        
+
         with open('video_objects.pkl', 'rb') as f:
             list_of_videos = pickle.load(f)
 
@@ -214,8 +214,13 @@ def download_videos_from_user(cl: Client ,insta_profile: Profile, conn, cursor, 
             logging.info("Did not download video due to chance")
             continue
 
-        path = cl.video_download_by_url(media.video_url, folder=download_folder)
-        logging.info(str(path))
+        try: 
+            path = cl.video_download_by_url(media.video_url, folder=download_folder)
+            random_time = random.randint(8, 12)
+            time.sleep(random_time)
+            logging.info(str(path))
+        except:
+            continue
 
         list_of_videos.append(Video_Object(path, process_caption_txt(media.caption_text), media.user))
         last_media_id = media.id

@@ -55,6 +55,7 @@ def pop_first_element():
         my_list = pickle.load(file)
     
     if (len(my_list) <= 0):
+        logging.info("Exiting since pickle file is empty")
         os._exit(0)
     
     first_element = my_list.pop(0)
