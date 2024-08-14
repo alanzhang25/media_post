@@ -1,4 +1,4 @@
-import pickle, logging, random, time, os
+import pickle, logging, random, time, os, requests
 
 from instagrapi import Client
 from tiktok_uploader.upload import upload_videos
@@ -114,6 +114,30 @@ def login_user(cl: Client):
     if not login_via_pw and not login_via_session:
         raise Exception("Couldn't login user with either password or session")
 
+def disable_insta_workflow():
+    repo_owner = "alanzhang25"
+    repo_name = "media_post"
+    workflow_id = "uploader.yml"
+    github_token = "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"
+
+    # GitHub API endpoint to disable the workflow
+    url = f"https://api.github.com/repos/{repo_owner}/{repo_name}/actions/workflows/{workflow_id}/disable"
+
+    # Headers for the request
+    headers = {
+        "Authorization": f"Bearer {github_token}",
+        "Accept": "application/vnd.github.v3+json"
+    }
+
+    # Make the request to disable the workflow
+    response = requests.put(url, headers=headers)
+
+    if response.status_code == 204:
+        print("Workflow disabled successfully!")
+    else:
+        print(f"Failed to disable workflow: {response.status_code}")
+        print(response.json())
+
 video = pop_first_element()
 
 cl = Client()
@@ -127,6 +151,7 @@ try:
     logging.info("Uploaded to Instagram!")
 except Exception as e:
     logging.info("Error: " + str(e))
+    disable_insta_workflow()
 
 
 # random_time = random.randint(8, 12)
