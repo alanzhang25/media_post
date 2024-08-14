@@ -210,7 +210,7 @@ def download_videos_from_user(cl: Client ,insta_profile: Profile, conn, cursor, 
         if (media.id == insta_profile.last_used_post_id):
             break
         rand_num = random.random()
-        if rand_num < 0.8:
+        if rand_num < 0.95:
             logging.info("Did not download video due to chance")
             continue
 
