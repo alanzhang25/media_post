@@ -2,8 +2,8 @@ from instagrapi import Client
 from instagrapi.exceptions import LoginRequired
 import logging, os, time, random, pickle
 
-USERNAME = 'chalant_ttrp'
-PASSWORD = 'alanetai2332'
+USERNAME = 'memez__4__life'
+PASSWORD = 'memez4life'
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 

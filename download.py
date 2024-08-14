@@ -5,8 +5,8 @@ import os, argparse, logging, sqlite3, pickle, random, time
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
-USERNAME = 'chalant_ttrp'
-PASSWORD = 'alanetai2332'
+USERNAME = 'memez__4__life'
+PASSWORD = 'memez4life'
 
 class Profile:
     def __init__(self, username, number_of_saved, user_id, last_used_post_id):
@@ -210,7 +210,7 @@ def download_videos_from_user(cl: Client ,insta_profile: Profile, conn, cursor, 
         if (media.id == insta_profile.last_used_post_id):
             break
         rand_num = random.random()
-        if rand_num < 0.66:
+        if rand_num < 0.2:
             logging.info("Did not download video due to chance")
             continue
 
