@@ -6,8 +6,8 @@ from tiktok_uploader.auth import AuthBackend
 from instagrapi.exceptions import LoginRequired
  
 
-USERNAME = 'chalant_ttrp'
-PASSWORD = 'alanetai2332'
+USERNAME = 'memez__4__life'
+PASSWORD = 'memez4life'
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
@@ -129,21 +129,21 @@ except Exception as e:
     logging.info("Error: " + str(e))
 
 
-random_time = random.randint(8, 12)
-logging.info("Sleeping for " + str(random_time) + " secs")
-time.sleep(random_time)
+# random_time = random.randint(8, 12)
+# logging.info("Sleeping for " + str(random_time) + " secs")
+# time.sleep(random_time)
 
-try:
-    auth = AuthBackend(cookies='tiktok/cookies.txt')
-except Exception as e:
-    logging.debug("Authentication error: " + str(e))
+# try:
+#     auth = AuthBackend(cookies='tiktok/cookies.txt')
+# except Exception as e:
+#     logging.debug("Authentication error: " + str(e))
 
-temp = [video]
-try:
-    failed = upload_videos(videos=temp, auth=auth, headless=True)
-    logging.info("Uploaded to TikTok!")
-except Exception as e:
-    logging.debug("Error: " + str(e))
+# temp = [video]
+# try:
+#     failed = upload_videos(videos=temp, auth=auth, headless=True)
+#     logging.info("Uploaded to TikTok!")
+# except Exception as e:
+#     logging.debug("Error: " + str(e))
         
 # for video in failed: # each input video object which failed
 #     logging.debug(f'{video["video"]} with description "{video["description"]}" failed')
