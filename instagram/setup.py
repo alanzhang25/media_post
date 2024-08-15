@@ -10,6 +10,8 @@ cl = Client()
 try:
     a = cl.login(USERNAME, PASSWORD)
     print(a)
+    print("______")
+    print(cl.get_settings())
 except Exception as e:
     print(f"An error occurred: {e}")
 

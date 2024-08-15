@@ -61,6 +61,9 @@ def login_user(cl: Client):
 
     if not login_via_pw and not login_via_session:
         raise Exception("Couldn't login user with either password or session")
+    
+    cl.login_flow
+    time.sleep(random.randint(3,8))
 
 def create_video_list(base_path):
     """
