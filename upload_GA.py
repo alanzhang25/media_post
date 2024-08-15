@@ -117,10 +117,9 @@ def login_user(cl: Client):
     cl.login_flow
     time.sleep(random.randint(3,8))
 
-def disable_insta_workflow():
+def disable_insta_workflow(workflow_id):
     repo_owner = "alanzhang25"
     repo_name = "media_post"
-    workflow_id = "uploader.yml"
     github_token = "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"
 
     # GitHub API endpoint to disable the workflow
@@ -154,7 +153,8 @@ try:
     logging.info("Uploaded to Instagram!")
 except Exception as e:
     logging.info("Error: " + str(e))
-    disable_insta_workflow()
+    disable_insta_workflow("uploader.yml")
+    disable_insta_workflow("downloader.yml")
 
 
 # random_time = random.randint(8, 12)
