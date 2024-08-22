@@ -120,7 +120,7 @@ def login_user(cl: Client):
 def disable_insta_workflow(workflow_id):
     repo_owner = "alanzhang25"
     repo_name = "media_post"
-    github_token = "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"
+    github_token = os.getenv('GITHUB_PAT')
 
     # GitHub API endpoint to disable the workflow
     url = f"https://api.github.com/repos/{repo_owner}/{repo_name}/actions/workflows/{workflow_id}/disable"
