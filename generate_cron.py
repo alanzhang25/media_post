@@ -14,7 +14,7 @@ def generate_minutes(count):
         selected_numbers.append(num)
 
         # Remove the selected number and numbers within a difference of 4
-        valid_numbers = [x for x in valid_numbers if abs(x - num) > 3]
+        valid_numbers = [x for x in valid_numbers if abs(x - num) > 10]
 
     return sorted(selected_numbers)  # Sort for readability, optional
 
