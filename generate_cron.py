@@ -13,8 +13,8 @@ def generate_minutes(count):
         num = random.choice(valid_numbers)  # Randomly select a number
         selected_numbers.append(num)
 
-        # Remove the selected number and numbers within a difference of 4
-        valid_numbers = [x for x in valid_numbers if abs(x - num) > 10]
+        # Remove the selected number and numbers within a difference of 5
+        valid_numbers = [x for x in valid_numbers if abs(x - num) > 5]
 
     return sorted(selected_numbers)  # Sort for readability, optional
 

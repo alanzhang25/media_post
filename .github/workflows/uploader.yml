@@ -8,13 +8,16 @@ on:
     - cron: '38 19 * * *'
   workflow_dispatch:
 
-
 jobs:
   run-python-script:
     runs-on: ubuntu-latest
 
     permissions:
       contents: write
+
+    concurrency:
+      group: media-uploader-${{ github.workflow }}
+      cancel-in-progress: false  # Queue new workflows if one is already running
 
     steps:
     - name: Check out the repository
