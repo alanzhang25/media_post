@@ -33,7 +33,7 @@ if current_day in [4,5,6]:
     if random.random() < skip_day:
         logging.info("SKIPPED POSTING TODAY")
     else:
-        num_posts_arr = [2, 3, 4]
+        num_posts_arr = [1, 2, 3]
         weights = [0.3, 0.5, 0.2]
         afternoon_percent = 0.62
         if random.random() < afternoon_percent:
@@ -50,7 +50,7 @@ else:
     if random.random() < skip_day:
         logging.info("SKIPPED POSTING TODAY")
     else:
-        num_posts_arr = [2, 3, 4]
+        num_posts_arr = [1, 2, 3]
         weights = [0.6, 0.2, 0.1]
         afternoon_percent = 0.83
         if random.random() < afternoon_percent:
