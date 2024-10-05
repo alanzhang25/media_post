@@ -3,8 +3,8 @@ name: Media Uploader
 on:
   schedule:
     # Initial placeholder for cron jobs, to be updated by the other workflow
-    - cron: '12 18 * * *'
-    - cron: '19 18 * * *'
+    - cron: '4 1 * * *'
+    - cron: '46 1 * * *'
   workflow_dispatch:
 
 jobs:
