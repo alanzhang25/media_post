@@ -4,7 +4,7 @@ on:
   schedule:
     # Initial placeholder for cron jobs, to be updated by the other workflow
     - cron: '4 1 * * *'
-    - cron: '46 1 * * *'
+    - cron: '42 1 * * *'
   workflow_dispatch:
 
 jobs:
